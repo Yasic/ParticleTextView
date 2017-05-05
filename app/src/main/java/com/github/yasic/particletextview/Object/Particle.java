@@ -1,8 +1,5 @@
 package com.github.yasic.particletextview.Object;
 
-/**
- * Created by yasic on 17-5-5.
- */
 public class Particle {
     private float radius;
     private String particleColor;

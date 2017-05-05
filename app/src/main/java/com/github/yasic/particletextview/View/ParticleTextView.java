@@ -14,9 +14,6 @@ import com.github.yasic.particletextview.Object.ParticleTextViewConfig;
 
 import java.util.Random;
 
-/**
- * Created by yasic on 17-5-5.
- */
 public class ParticleTextView extends View {
     private Paint textPaint;
     private Bitmap bitmap;

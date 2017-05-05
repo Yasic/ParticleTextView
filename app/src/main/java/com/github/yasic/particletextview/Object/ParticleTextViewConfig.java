@@ -6,9 +6,6 @@ import android.os.Bundle;
 
 import com.github.yasic.particletextview.View.ParticleTextView;
 
-/**
- * Created by yasic on 17-5-5.
- */
 public class ParticleTextViewConfig {
     private int columnStep = 3;
     private int rowStep = 3;
