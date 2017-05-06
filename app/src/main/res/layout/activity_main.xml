@@ -26,4 +26,8 @@
         android:id="@+id/particleTextView4"
         android:layout_width="match_parent"
         android:layout_height="100dp" />
+    <com.github.yasic.particletextview.View.ParticleTextView
+        android:id="@+id/particleTextView5"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
 </LinearLayout>

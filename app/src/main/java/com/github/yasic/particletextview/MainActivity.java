@@ -3,6 +3,11 @@ package com.github.yasic.particletextview;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.github.yasic.particletextview.MovingStrategy.BidiverticalStrategy;
+import com.github.yasic.particletextview.MovingStrategy.BidizontalStrategy;
+import com.github.yasic.particletextview.MovingStrategy.CornerStrategy;
+import com.github.yasic.particletextview.MovingStrategy.HorizontalStrategy;
+import com.github.yasic.particletextview.MovingStrategy.VerticalStrategy;
 import com.github.yasic.particletextview.Object.ParticleTextViewConfig;
 import com.github.yasic.particletextview.View.ParticleTextView;
 
@@ -15,48 +20,80 @@ public class MainActivity extends AppCompatActivity {
 
         ParticleTextView particleTextView1 = (ParticleTextView) findViewById(R.id.particleTextView1);
         ParticleTextViewConfig config1 = new ParticleTextViewConfig.Builder()
-                .setTargetText("YASIC")
-                .setReleasing(0.1)
-                .setParticleRadius(1.5f)
+                .setTargetText("Loading")
+                .setReleasing(0.4)
+                .setParticleRadius(4)
                 .setMiniDistance(1)
+                .setTextSize(150)
+                .setRowStep(9)
+                .setColumnStep(9)
                 .instance();
         particleTextView1.setConfig(config1);
-        particleTextView1.startAnimation();
 
         ParticleTextView particleTextView2 = (ParticleTextView) findViewById(R.id.particleTextView2);
+        VerticalStrategy verticalStrategy = new VerticalStrategy();
         ParticleTextViewConfig config2 = new ParticleTextViewConfig.Builder()
                 .setTargetText("ParticleTextView")
-                .setReleasing(0.1)
-                .setParticleRadius(2)
-                .setTextSize(80)
-                .setMiniDistance(0.8)
+                .setReleasing(0.5)
+                .setParticleRadius(3)
+                .setTextSize(120)
+                .setMiniDistance(0.5)
+                .setColumnStep(5)
+                .setRowStep(5)
+                .setParticleColorArray(new String[]{"#333333", "#222222", "#111111"})
+                .setMovingStrategy(verticalStrategy)
                 .instance();
         particleTextView2.setConfig(config2);
-        particleTextView2.startAnimation();
 
         ParticleTextView particleTextView3 = (ParticleTextView) findViewById(R.id.particleTextView3);
+        CornerStrategy cornerStrategy = new CornerStrategy();
         ParticleTextViewConfig config3 = new ParticleTextViewConfig.Builder()
-                .setTargetText("十万嬉皮")
+                .setTargetText("Java")
                 .setReleasing(0.3)
-                .setParticleRadius(2)
-                .setTextSize(60)
+                .setParticleRadius(4)
+                .setTextSize(150)
+                .setColumnStep(6)
+                .setRowStep(6)
+                .setMovingStrategy(cornerStrategy)
+                .setParticleColorArray(new String[]{"#9933ff"})
                 .instance();
         particleTextView3.setConfig(config3);
-        particleTextView3.startAnimation();
 
         ParticleTextView particleTextView4 = (ParticleTextView) findViewById(R.id.particleTextView4);
+        BidiverticalStrategy movingStrategy4 = new BidiverticalStrategy();
         ParticleTextViewConfig config4 = new ParticleTextViewConfig.Builder()
                 .setTargetText("Android")
                 .setReleasing(0.1)
-                .setParticleRadius(1)
-                .setTextSize(120)
-                .setMiniDistance(1)
+                .setTextSize(150)
+                .setMiniDistance(0.01)
                 .setParticleRadius(4)
                 .setColumnStep(6)
                 .setRowStep(6)
+                .setDelay((long) 500)
+                .setParticleColorArray(new String[]{"#99ff33"})
+                .setMovingStrategy(movingStrategy4)
                 .instance();
         particleTextView4.setConfig(config4);
+
+        ParticleTextView particleTextView5 = (ParticleTextView) findViewById(R.id.particleTextView5);
+        BidizontalStrategy movingStrategy5 = new BidizontalStrategy();
+        ParticleTextViewConfig config5 = new ParticleTextViewConfig.Builder()
+                .setTargetText("Canvas")
+                .setReleasing(0.3)
+                .setTextSize(150)
+                .setMiniDistance(0.01)
+                .setParticleRadius(4)
+                .setColumnStep(8)
+                .setRowStep(8)
+                .setMovingStrategy(movingStrategy5)
+                .instance();
+        particleTextView5.setConfig(config5);
+
+        particleTextView1.startAnimation();
+        particleTextView2.startAnimation();
+        particleTextView3.startAnimation();
         particleTextView4.startAnimation();
+        particleTextView5.startAnimation();
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.github.yasic.particletextview.Object;
 
+import android.util.Log;
+
 public class Particle {
     private float radius;
     private String particleColor;
@@ -9,17 +11,20 @@ public class Particle {
     private double targetY = 0;
     private double vx = 0;
     private double vy = 0;
+    private Double[][] path = null;
+    private int pathProcess = 0;
 
     public Particle(float radius, String particleColor) {
         this.radius = radius;
         this.particleColor = particleColor;
     }
 
-    public void setPath(double sourceX, double sourceY, double targetX, double targetY){
-        this.sourceX = sourceX;
-        this.sourceY = sourceY;
-        this.targetX = targetX;
-        this.targetY = targetY;
+    public void updatePath(){
+        addPathProcess();
+        setSourceX(path[pathProcess][0]);
+        setSourceY(path[pathProcess][1]);
+        setTargetX(path[(pathProcess + 1) % path.length][0]);
+        setTargetY(path[(pathProcess + 1) % path.length][1]);
     }
 
     public void setSourceX(double sourceX) {
@@ -30,12 +35,36 @@ public class Particle {
         this.sourceY = sourceY;
     }
 
+    public void setTargetX(double targetX) {
+        this.targetX = targetX;
+    }
+
+    public void setTargetY(double targetY) {
+        this.targetY = targetY;
+    }
+
     public void setVx(double vx) {
         this.vx = vx;
     }
 
     public void setVy(double vy) {
         this.vy = vy;
+    }
+
+    public void setParticleColor(String particleColor) {
+        this.particleColor = particleColor;
+    }
+
+    public void setPath(Double[][] path){
+        this.path = path;
+        this.setSourceX(path[0][0]);
+        this.setSourceY(path[0][1]);
+        this.setTargetX(path[1][0]);
+        this.setTargetY(path[1][1]);
+    }
+
+    private void addPathProcess() {
+        this.pathProcess = (pathProcess + 1) % path.length;
     }
 
     public float getRadius() {
@@ -68,5 +97,13 @@ public class Particle {
 
     public double getVy() {
         return vy;
+    }
+
+    public Double[][] getPath() {
+        return path;
+    }
+
+    public int getPathProcess() {
+        return pathProcess;
     }
 }
