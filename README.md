@@ -2,7 +2,7 @@
 
 # 概览
 
-![](https://github.com/Yasic/ParticleTextView/blob/master/Screenshot/BidiVertical-1.gif?raw=true)
+<img src="https://github.com/Yasic/ParticleTextView/blob/master/Screenshot/Total.gif?raw=true" width="300px" height="500px">
 
 Copyright Yasic
 
