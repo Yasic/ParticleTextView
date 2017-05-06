@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.yasic.library.particletextview.MovingStrategy.BidiHorizontalStrategy;
+import com.yasic.library.particletextview.MovingStrategy.RandomMovingStrategy;
 import com.yasic.library.particletextview.Object.ParticleTextViewConfig;
 import com.yasic.library.particletextview.View.ParticleTextView;
 
@@ -16,15 +17,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ParticleTextView particleTextView1 = (ParticleTextView) findViewById(R.id.particleTextView1);
+        RandomMovingStrategy randomMovingStrategy = new RandomMovingStrategy();
         BidiHorizontalStrategy bidiHorizontalStrategy = new BidiHorizontalStrategy();
         ParticleTextViewConfig config1 = new ParticleTextViewConfig.Builder()
+                .setRowStep(8)
+                .setColumnStep(8)
                 .setTargetText("BidiHorizontal")
                 .setReleasing(0.2)
                 .setParticleRadius(4)
                 .setMiniDistance(0.1)
                 .setTextSize(150)
-                .setRowStep(8)
-                .setColumnStep(8)
                 .setMovingStrategy(bidiHorizontalStrategy)
                 .instance();
         particleTextView1.setConfig(config1);
