@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.github.yasic.particletextview">
+    package="com.yasic.library.particletextview">
 
     <application
         android:allowBackup="true"
