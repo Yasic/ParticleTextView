@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ParticleTextView.iml" filepath="$PROJECT_DIR$/ParticleTextView.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/particletextview/particletextview.iml" filepath="$PROJECT_DIR$/particletextview/particletextview.iml" />
     </modules>
   </component>
 </project>
