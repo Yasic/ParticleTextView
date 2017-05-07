@@ -11,7 +11,7 @@ ParticleTextView 是一个 Android 平台的自定义 view 组件，可以用彩
 ## 1. 引入依赖
 
 ```
-即将加入
+compile 'yasic.library.ParticleTextView:particletextview:0.0.3'
 ```
 
 ## 2. 加入到布局文件中
@@ -31,7 +31,7 @@ RandomMovingStrategy randomMovingStrategy = new RandomMovingStrategy();
 ParticleTextViewConfig config = new ParticleTextViewConfig.Builder()
                 .setRowStep(8)
                 .setColumnStep(8)
-                .setTargetText("BidiHorizontal")
+                .setTargetText("Random")
                 .setReleasing(0.2)
                 .setParticleRadius(4)
                 .setMiniDistance(0.1)
@@ -157,6 +157,7 @@ setDelay(Long delay)
 
 # License
 
+```
 Copyright 2017 Yasic
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -170,3 +171,4 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
+```

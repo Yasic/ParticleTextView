@@ -109,7 +109,8 @@ public class ParticleTextView extends View {
                 red = Color.red(colorArray[i][j]);
                 green = Color.green(colorArray[i][j]);
                 blue = Color.blue(colorArray[i][j]);
-                if (red == 51 || green == 51 || blue == 51) {
+                //This RGB group is the value of "#3399ff" which defined in initTextPaint()
+                if (red == 51 && green == 153 && blue == 255) {
                     particles[index] = new Particle(particleRadius, getRandomColor());
                     movingStrategy.setMovingPath(particles[index], getWidth(), getHeight(), new double[]{j ,i});
                     particles[index].setVx((particles[index].getTargetX() - particles[index].getSourceX()) * releasing);
