@@ -18,7 +18,7 @@ compile 'yasic.library.ParticleTextView:particletextview:0.0.3'
 
 ```Java
     <com.yasic.library.particletextview.View.ParticleTextView
-        android:id="@+id/particleTextView1"
+        android:id="@+id/particleTextView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 ```
@@ -85,6 +85,8 @@ particleTextView1.stopAnimation();
 
 ## 配置信息类 ParticleTextViewConfig
 
+配置信息类采用工厂模式创建，以下属性均为可选属性。
+
 * 设置显示的文字
 
 ```Java
@@ -149,10 +151,48 @@ setParticleColorArray(String[] particleColorArray)
 setMovingStrategy(MovingStrategy movingStrategy)
 ```
 
-* 设置循环动画间的间隔时间
+* 设置不同路径间动画的间隔时间
+
+delay < 0 时动画不循环
 
 ```Java
 setDelay(Long delay)
+```
+
+## ParticleTextView类
+
+* 指定配置信息类
+
+```
+setConfig(ParticleTextViewConfig config)
+```
+
+* 开启动画
+
+```
+void startAnimation()
+```
+
+* 停止动画
+
+```
+void stopAnimation()
+```
+
+* 获取动画是否暂停
+
+暂停是指动画完成了一段路径后的暂留状态
+
+```
+boolean isAnimationPause()
+```
+
+* 获取动画是否停止
+
+停止是指动画完成了一次完整路径后的停止状态
+
+```
+boolean isAnimationStop()
 ```
 
 # License

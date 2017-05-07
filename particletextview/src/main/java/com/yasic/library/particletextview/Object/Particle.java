@@ -17,7 +17,7 @@ public class Particle {
         this.particleColor = particleColor;
     }
 
-    public void updatePath(){
+    public void updatePathProcess(){
         addPathProcess();
         setSourceX(path[pathProcess][0]);
         setSourceY(path[pathProcess][1]);

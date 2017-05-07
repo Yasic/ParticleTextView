@@ -1,12 +1,21 @@
 package com.github.yasic.particletextview;
 
+import android.content.res.ObbInfo;
+import android.support.annotation.MainThread;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.yasic.library.particletextview.MovingStrategy.BidiHorizontalStrategy;
 import com.yasic.library.particletextview.MovingStrategy.RandomMovingStrategy;
 import com.yasic.library.particletextview.Object.ParticleTextViewConfig;
 import com.yasic.library.particletextview.View.ParticleTextView;
+
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -16,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ParticleTextView particleTextView1 = (ParticleTextView) findViewById(R.id.particleTextView1);
+        final ParticleTextView particleTextView1 = (ParticleTextView) findViewById(R.id.particleTextView1);
         RandomMovingStrategy randomMovingStrategy = new RandomMovingStrategy();
         BidiHorizontalStrategy bidiHorizontalStrategy = new BidiHorizontalStrategy();
         ParticleTextViewConfig config1 = new ParticleTextViewConfig.Builder()

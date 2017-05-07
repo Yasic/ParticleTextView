@@ -1,5 +1,7 @@
 package com.yasic.library.particletextview.Object;
 
+import android.util.Log;
+
 import com.yasic.library.particletextview.MovingStrategy.MovingStrategy;
 import com.yasic.library.particletextview.MovingStrategy.RandomMovingStrategy;
 
@@ -24,21 +26,33 @@ public class ParticleTextViewConfig {
         }
 
         public Builder setColumnStep(int columnStep){
+            if (columnStep < 0){
+                columnStep = 0;
+            }
             particleTextViewConfig.columnStep = columnStep;
             return this;
         }
 
         public Builder setRowStep(int rowStep){
+            if (rowStep < 0){
+                rowStep = 0;
+            }
             particleTextViewConfig.rowStep = rowStep;
             return this;
         }
 
         public Builder setReleasing(double releasing) {
+            if (releasing < 0){
+                releasing = 0;
+            }
             particleTextViewConfig.releasing = releasing;
             return this;
         }
 
         public Builder setMiniDistance(double miniDistance) {
+            if (miniDistance < 0){
+                miniDistance = 0;
+            }
             particleTextViewConfig.miniJudgeDistance = miniDistance;
             return this;
         }
@@ -54,21 +68,35 @@ public class ParticleTextViewConfig {
         }
 
         public Builder setParticleRadius(float radius){
+            if (radius < 0){
+                Log.e("ConfigWarning", "Particle radius should not be negative");
+            }
             particleTextViewConfig.particleRadius = radius;
             return this;
         }
 
         public Builder setParticleColorArray(String[] particleColorArray){
+            if (particleColorArray == null || particleColorArray.length == 0){
+                Log.e("ConfigError", "The length of particleColorArray must bigger than 0!Has set it to random color array");
+                particleColorArray = null;
+            }
             particleTextViewConfig.particleColorArray = particleColorArray;
             return this;
         }
 
         public Builder setMovingStrategy(MovingStrategy movingStrategy){
+            if (movingStrategy == null){
+                Log.e("ConfigError", "Moving strategy cannot be null!Has set it to RandomMovingStrategy");
+                movingStrategy = new RandomMovingStrategy();
+            }
             particleTextViewConfig.movingStrategy = movingStrategy;
             return this;
         }
 
         public Builder setDelay(Long delay){
+            if (delay < (long)-1){
+                delay = (long)-1;
+            }
             particleTextViewConfig.delay = delay;
             return this;
         }

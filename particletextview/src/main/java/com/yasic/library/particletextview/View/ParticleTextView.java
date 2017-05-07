@@ -22,10 +22,10 @@ import rx.functions.Action1;
 public class ParticleTextView extends View {
     private Paint textPaint;
     private Bitmap bitmap;
-    private int[][] colorArray;
     private Particle[] particles = null;
-    private boolean isAnimationStart = false;
+    private boolean isAnimationOn = false;
     private boolean isAnimationPause = false;
+    private boolean isAnimationStop = false;
 
     private int columnStep;
     private int rowStep;
@@ -37,6 +37,12 @@ public class ParticleTextView extends View {
     private String[] particleColorArray = null;
     private MovingStrategy movingStrategy = null;
     private long delay = 1000;
+
+    public ParticleTextView(Context context) {
+        super(context);
+        ParticleTextViewConfig tempConfig = new ParticleTextViewConfig.Builder().instance();
+        setConfig(tempConfig);
+    }
 
     public ParticleTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -54,8 +60,8 @@ public class ParticleTextView extends View {
         return textPaint;
     }
 
-    public void setConfig(ParticleTextViewConfig config){
-        if (config != null){
+    public void setConfig(ParticleTextViewConfig config) {
+        if (config != null) {
             this.columnStep = config.getColumnStep();
             this.rowStep = config.getRowStep();
             this.releasing = config.getReleasing();
@@ -71,36 +77,28 @@ public class ParticleTextView extends View {
         }
     }
 
-    public void startAnimation(){
-        this.isAnimationStart = true;
+    public void startAnimation() {
+        this.isAnimationOn = true;
     }
 
     public void stopAnimation() {
-        this.isAnimationStart = false;
+        this.isAnimationOn = false;
     }
 
-    public boolean isAnimationPause(){
+    public boolean isAnimationPause() {
         return this.isAnimationPause;
+    }
+
+    public boolean isAnimationStop(){
+        return this.isAnimationStop;
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        textPaint = initTextPaint();
         int centerX = getWidth() / 2;
         int centerY = getHeight() / 2;
-        Paint.FontMetrics fontMetrics = textPaint.getFontMetrics();
-        float textHeight = fontMetrics.descent - fontMetrics.ascent;
-        bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas textCanvas = new Canvas(bitmap);
-        textCanvas.drawText(targetText, centerX, centerY + textHeight / 2, textPaint);
-        colorArray = new int[bitmap.getHeight()][bitmap.getWidth()];
-        for (int row = 0; row < bitmap.getHeight(); row++) {
-            for (int column = 0; column < bitmap.getWidth(); column++) {
-                colorArray[row][column] = bitmap.getPixel(column, row);
-            }
-        }
-
+        int[][] colorArray = bitmapTransition(centerX, centerY);
         int red, green, blue;
         particles = new Particle[(colorArray.length / rowStep) * colorArray[0].length / columnStep];
         int index = 0;
@@ -112,7 +110,7 @@ public class ParticleTextView extends View {
                 //This RGB group is the value of "#3399ff" which defined in initTextPaint()
                 if (red == 51 && green == 153 && blue == 255) {
                     particles[index] = new Particle(particleRadius, getRandomColor());
-                    movingStrategy.setMovingPath(particles[index], getWidth(), getHeight(), new double[]{j ,i});
+                    movingStrategy.setMovingPath(particles[index], getWidth(), getHeight(), new double[]{j, i});
                     particles[index].setVx((particles[index].getTargetX() - particles[index].getSourceX()) * releasing);
                     particles[index].setVy((particles[index].getTargetY() - particles[index].getSourceY()) * releasing);
                     index++;
@@ -121,56 +119,40 @@ public class ParticleTextView extends View {
         }
     }
 
+    private int[][] bitmapTransition(int centerX, int centerY) {
+        int[][] colorArray;
+        textPaint = initTextPaint();
+        bitmap = Bitmap.createBitmap(centerX * 2, centerY * 2, Bitmap.Config.ARGB_8888);
+        Canvas textCanvas = new Canvas(bitmap);
+        textCanvas.drawText(targetText, centerX, centerY, textPaint);
+        colorArray = new int[bitmap.getHeight()][bitmap.getWidth()];
+        for (int row = 0; row < bitmap.getHeight(); row++) {
+            for (int column = 0; column < bitmap.getWidth(); column++) {
+                colorArray[row][column] = bitmap.getPixel(column, row);
+            }
+        }
+        return colorArray;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        boolean hasParticleNotFinish = false;
-        if (!isAnimationStart){
+        if (!isAnimationOn) {
             return;
         }
-        for (Particle item: particles){
-            if (item != null){
-                if (Math.abs(item.getVx()) < miniJudgeDistance && Math.abs(item.getVy()) < miniJudgeDistance){
-                    item.setSourceX(item.getTargetX());
-                    item.setSourceY(item.getTargetY());
-                } else {
-                    hasParticleNotFinish = true;
-                }
-            }else {
-                break;
-            }
-        }
 
-        if (!hasParticleNotFinish){
-            isAnimationPause = true;
-            for (Particle item: particles){
-                if (item != null) {
-                    item.updatePath();
-                } else {
-                    break;
-                }
-            }
-            if (delay >= 0){
-                rx.Observable.timer(delay, TimeUnit.MILLISECONDS)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Action1<Long>() {
-                            @Override
-                            public void call(Long aLong) {
-                                isAnimationPause = false;
-                            }
-                        });
-            }
+        if (!checkJudgeDistance()) {
+            pauseAnimation();
         }
 
         for (int i = 0; i < particles.length; i++) {
             canvas.save();
-            if (particles[i] != null){
-                canvas.save();
+            if (particles[i] != null) {
                 textPaint.setColor(Color.parseColor(particles[i].getParticleColor()));
-                canvas.drawCircle((int)particles[i].getSourceX(), (int)particles[i].getSourceY(), particles[i].getRadius(), textPaint);
+                canvas.drawCircle((int) particles[i].getSourceX(), (int) particles[i].getSourceY(), particles[i].getRadius(), textPaint);
                 particles[i].setVx((particles[i].getTargetX() - particles[i].getSourceX()) * releasing);
                 particles[i].setVy((particles[i].getTargetY() - particles[i].getSourceY()) * releasing);
-                if (!isAnimationPause){
+                if (!isAnimationPause) {
                     particles[i].setSourceX(particles[i].getSourceX() + particles[i].getVx());
                     particles[i].setSourceY(particles[i].getSourceY() + particles[i].getVy());
                 }
@@ -182,8 +164,52 @@ public class ParticleTextView extends View {
         }
     }
 
+    private void pauseAnimation() {
+        isAnimationPause = true;
+        for (Particle item : particles) {
+            if (item != null) {
+                item.updatePathProcess();
+                if (item.getPathProcess() == item.getPath().length - 1){
+                    isAnimationStop = true;
+                }
+                else {
+                    isAnimationStop = false;
+                }
+            } else {
+                break;
+            }
+        }
+        if (delay >= 0) {
+            rx.Observable.timer(delay, TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<Long>() {
+                        @Override
+                        public void call(Long aLong) {
+                            isAnimationPause = false;
+                        }
+                    });
+        }
+    }
+
+    private boolean checkJudgeDistance() {
+        boolean hasParticleNotFinish = false;
+        for (Particle item : particles) {
+            if (item != null) {
+                if (Math.abs(item.getVx()) < miniJudgeDistance && Math.abs(item.getVy()) < miniJudgeDistance) {
+                    item.setSourceX(item.getTargetX());
+                    item.setSourceY(item.getTargetY());
+                } else {
+                    hasParticleNotFinish = true;
+                }
+            } else {
+                break;
+            }
+        }
+        return hasParticleNotFinish;
+    }
+
     private String getRandomColor() {
-        if (particleColorArray == null){
+        if (particleColorArray == null) {
             String red, green, blue;
             Random random = new Random();
 
@@ -191,11 +217,11 @@ public class ParticleTextView extends View {
             green = Integer.toHexString(random.nextInt(256)).toUpperCase();
             blue = Integer.toHexString(random.nextInt(256)).toUpperCase();
 
-            red = red.length() == 1 ? "0" + red : red ;
-            green = green.length() == 1 ? "0" + green : green ;
-            blue = blue.length() == 1 ? "0" + blue : blue ;
+            red = red.length() == 1 ? "0" + red : red;
+            green = green.length() == 1 ? "0" + green : green;
+            blue = blue.length() == 1 ? "0" + blue : blue;
             return "#" + red + green + blue;
-        }else {
+        } else {
             return particleColorArray[(int) (Math.random() * particleColorArray.length)];
         }
     }
