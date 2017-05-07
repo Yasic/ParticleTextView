@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "0.0.3"
+version = "0.0.4"
 
 ext {
     bintrayRepo = 'maven'
@@ -17,7 +17,7 @@ ext {
     siteUrl = 'https://github.com/Yasic/ParticleTextView'
     gitUrl = 'https://github.com/Yasic/ParticleTextView.git'
 
-    libraryVersion = '0.0.1'
+    libraryVersion = '0.0.4'
 
     developerId = 'yasic'
     developerName = 'yasic'
