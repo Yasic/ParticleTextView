@@ -13,5 +13,25 @@
     <com.yasic.library.particletextview.View.ParticleTextView
         android:id="@+id/particleTextView1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="100dp" />
+
+    <com.yasic.library.particletextview.View.ParticleTextView
+        android:id="@+id/particleTextView2"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
+    <com.yasic.library.particletextview.View.ParticleTextView
+        android:id="@+id/particleTextView3"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
+    <com.yasic.library.particletextview.View.ParticleTextView
+        android:id="@+id/particleTextView4"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
+
+    <com.yasic.library.particletextview.View.ParticleTextView
+        android:id="@+id/particleTextView5"
+        android:layout_width="match_parent"
+        android:layout_height="100dp" />
 </LinearLayout>

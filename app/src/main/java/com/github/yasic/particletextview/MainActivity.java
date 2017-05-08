@@ -7,7 +7,10 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.yasic.library.particletextview.MovingStrategy.BidiHorizontalStrategy;
+import com.yasic.library.particletextview.MovingStrategy.BidiVerticalStrategy;
+import com.yasic.library.particletextview.MovingStrategy.CornerStrategy;
 import com.yasic.library.particletextview.MovingStrategy.RandomMovingStrategy;
+import com.yasic.library.particletextview.MovingStrategy.VerticalStrategy;
 import com.yasic.library.particletextview.Object.ParticleTextViewConfig;
 import com.yasic.library.particletextview.View.ParticleTextView;
 
@@ -25,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final ParticleTextView particleTextView1 = (ParticleTextView) findViewById(R.id.particleTextView1);
+        /*ParticleTextView particleTextView1 = (ParticleTextView) findViewById(R.id.particleTextView1);
         RandomMovingStrategy randomMovingStrategy = new RandomMovingStrategy();
-        BidiHorizontalStrategy bidiHorizontalStrategy = new BidiHorizontalStrategy();
+        //BidiHorizontalStrategy bidiHorizontalStrategy = new BidiHorizontalStrategy();
         ParticleTextViewConfig config1 = new ParticleTextViewConfig.Builder()
                 .setRowStep(8)
                 .setColumnStep(8)
@@ -36,12 +39,12 @@ public class MainActivity extends AppCompatActivity {
                 .setParticleRadius(4)
                 .setMiniDistance(0.1)
                 .setTextSize(150)
-                .setMovingStrategy(bidiHorizontalStrategy)
+                .setMovingStrategy(randomMovingStrategy)
                 .instance();
         particleTextView1.setConfig(config1);
-        particleTextView1.startAnimation();
+        particleTextView1.startAnimation();*/
 
-        /*ParticleTextView particleTextView1 = (ParticleTextView) findViewById(R.id.particleTextView1);
+        ParticleTextView particleTextView1 = (ParticleTextView) findViewById(R.id.particleTextView1);
         ParticleTextViewConfig config1 = new ParticleTextViewConfig.Builder()
                 .setTargetText("Loading")
                 .setReleasing(0.4)
@@ -86,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         BidiVerticalStrategy movingStrategy4 = new BidiVerticalStrategy();
         ParticleTextViewConfig config4 = new ParticleTextViewConfig.Builder()
                 .setTargetText("Android")
-                .setReleasing(0.1)
+                .setReleasing(0.3)
                 .setTextSize(150)
                 .setMiniDistance(0.01)
                 .setParticleRadius(4)
@@ -116,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         particleTextView2.startAnimation();
         particleTextView3.startAnimation();
         particleTextView4.startAnimation();
-        particleTextView5.startAnimation();*/
+        particleTextView5.startAnimation();
     }
 
     @Override
