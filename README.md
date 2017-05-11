@@ -11,7 +11,7 @@ ParticleTextView 是一个 Android 平台的自定义 view 组件，可以用彩
 ## 1. 引入依赖
 
 ```
-compile 'yasic.library.ParticleTextView:particletextview:0.0.3'
+compile 'yasic.library.ParticleTextView:particletextview:0.0.4'
 ```
 
 ## 2. 加入到布局文件中
@@ -194,6 +194,10 @@ boolean isAnimationPause()
 ```
 boolean isAnimationStop()
 ```
+
+## ParticleTextSurfaceView 类
+
+继承自 SurfaceView 类，利用子线程进行 Canvas 绘制，在多个组件渲染情况下效率更高。所有 API 与 ParticleTextView 类一致。
 
 # License
 

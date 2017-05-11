@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Button
+        android:id="@+id/btn_view_demo"
+        android:text="View Demo"
+        android:textAllCaps="false"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
+    <Button
+        android:id="@+id/btn_surface_view_demo"
+        android:text="Surface View Demo"
+        android:textAllCaps="false"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
+    <Button
+        android:id="@+id/btn_view_on_click_demo"
+        android:text="View On Click Demo"
+        android:textAllCaps="false"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
+
+    <Button
+        android:id="@+id/btn_surface_view_on_click_demo"
+        android:text="Surface View On Click Demo"
+        android:textAllCaps="false"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
+</LinearLayout>

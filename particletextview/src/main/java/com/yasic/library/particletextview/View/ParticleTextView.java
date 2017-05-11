@@ -96,27 +96,7 @@ public class ParticleTextView extends View {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        int centerX = getWidth() / 2;
-        int centerY = getHeight() / 2;
-        int[][] colorArray = bitmapTransition(centerX, centerY);
-        int red, green, blue;
-        particles = new Particle[(colorArray.length / rowStep) * colorArray[0].length / columnStep];
-        int index = 0;
-        for (int i = 0; i < colorArray.length; i += rowStep) {
-            for (int j = 0; j < colorArray[0].length; j += columnStep) {
-                red = Color.red(colorArray[i][j]);
-                green = Color.green(colorArray[i][j]);
-                blue = Color.blue(colorArray[i][j]);
-                //This RGB group is the value of "#3399ff" which defined in initTextPaint()
-                if (red == 51 && green == 153 && blue == 255) {
-                    particles[index] = new Particle(particleRadius, getRandomColor());
-                    movingStrategy.setMovingPath(particles[index], getWidth(), getHeight(), new double[]{j, i});
-                    particles[index].setVx((particles[index].getTargetX() - particles[index].getSourceX()) * releasing);
-                    particles[index].setVy((particles[index].getTargetY() - particles[index].getSourceY()) * releasing);
-                    index++;
-                }
-            }
-        }
+        setParticles();
     }
 
     private int[][] bitmapTransition(int centerX, int centerY) {
@@ -138,6 +118,8 @@ public class ParticleTextView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (!isAnimationOn) {
+            setParticles();
+            invalidate();
             return;
         }
 
@@ -160,6 +142,30 @@ public class ParticleTextView extends View {
                 canvas.restore();
                 invalidate();
                 break;
+            }
+        }
+    }
+
+    private void setParticles(){
+        int centerX = getWidth() / 2;
+        int centerY = getHeight() / 2;
+        int[][] colorArray = bitmapTransition(centerX, centerY);
+        int red, green, blue;
+        particles = new Particle[(colorArray.length / rowStep) * colorArray[0].length / columnStep];
+        int index = 0;
+        for (int i = 0; i < colorArray.length; i += rowStep) {
+            for (int j = 0; j < colorArray[0].length; j += columnStep) {
+                red = Color.red(colorArray[i][j]);
+                green = Color.green(colorArray[i][j]);
+                blue = Color.blue(colorArray[i][j]);
+                //This RGB group is the value of "#3399ff" which defined in initTextPaint()
+                if (red == 51 && green == 153 && blue == 255) {
+                    particles[index] = new Particle(particleRadius, getRandomColor());
+                    movingStrategy.setMovingPath(particles[index], getWidth(), getHeight(), new double[]{j, i});
+                    particles[index].setVx((particles[index].getTargetX() - particles[index].getSourceX()) * releasing);
+                    particles[index].setVy((particles[index].getTargetY() - particles[index].getSourceY()) * releasing);
+                    index++;
+                }
             }
         }
     }
