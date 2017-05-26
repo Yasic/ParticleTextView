@@ -25,7 +25,10 @@ public class ParticleTextView extends View {
     private Particle[] particles = null;
     private boolean isAnimationOn = false;
     private boolean isAnimationPause = false;
+    private boolean isAnimationFrozen = false;
     private boolean isAnimationStop = false;
+    private boolean viewUpdated = false;
+    private boolean setParticles = false;
 
     private int columnStep;
     private int rowStep;
@@ -79,6 +82,9 @@ public class ParticleTextView extends View {
 
     public void startAnimation() {
         this.isAnimationOn = true;
+        this.isAnimationFrozen = false;
+        setParticles = false;
+        invalidate();
     }
 
     public void stopAnimation() {
@@ -111,15 +117,21 @@ public class ParticleTextView extends View {
                 colorArray[row][column] = bitmap.getPixel(column, row);
             }
         }
+        Log.d("Bitmap Transition", "Run");
         return colorArray;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (!isAnimationOn) {
+
+        if (!setParticles)
+        {
             setParticles();
-            invalidate();
+            setParticles = true;
+        }
+
+        if (!isAnimationOn) {
             return;
         }
 
@@ -127,21 +139,44 @@ public class ParticleTextView extends View {
             pauseAnimation();
         }
 
-        for (int i = 0; i < particles.length; i++) {
-            canvas.save();
-            if (particles[i] != null) {
-                textPaint.setColor(Color.parseColor(particles[i].getParticleColor()));
-                canvas.drawCircle((int) particles[i].getSourceX(), (int) particles[i].getSourceY(), particles[i].getRadius(), textPaint);
-                particles[i].setVx((particles[i].getTargetX() - particles[i].getSourceX()) * releasing);
-                particles[i].setVy((particles[i].getTargetY() - particles[i].getSourceY()) * releasing);
-                if (!isAnimationPause) {
-                    particles[i].setSourceX(particles[i].getSourceX() + particles[i].getVx());
-                    particles[i].setSourceY(particles[i].getSourceY() + particles[i].getVy());
+        if (!isAnimationFrozen)
+        {
+            for (int i = 0; i < particles.length; i++) {
+                canvas.save();
+                if (particles[i] != null) {
+                    textPaint.setColor(Color.parseColor(particles[i].getParticleColor()));
+                    canvas.drawCircle((int) particles[i].getSourceX(), (int) particles[i].getSourceY(), particles[i].getRadius(), textPaint);
+                    particles[i].setVx((particles[i].getTargetX() - particles[i].getSourceX()) * releasing);
+                    particles[i].setVy((particles[i].getTargetY() - particles[i].getSourceY()) * releasing);
+                    if (!isAnimationPause) {
+                        particles[i].setSourceX(particles[i].getSourceX() + particles[i].getVx());
+                        particles[i].setSourceY(particles[i].getSourceY() + particles[i].getVy());
+                    }
+                } else {
+                    canvas.restore();
+                    invalidate();
+                    break;
                 }
-            } else {
-                canvas.restore();
-                invalidate();
-                break;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < particles.length; i++) {
+                canvas.save();
+                if (particles[i] != null) {
+                    textPaint.setColor(Color.parseColor(particles[i].getParticleColor()));
+                    canvas.drawCircle((int) particles[i].getSourceX(), (int) particles[i].getSourceY(), particles[i].getRadius(), textPaint);
+                    particles[i].setVx((particles[i].getTargetX() - particles[i].getSourceX()) * releasing);
+                    particles[i].setVy((particles[i].getTargetY() - particles[i].getSourceY()) * releasing);
+                } else {
+                    canvas.restore();
+                    if (!viewUpdated)
+                    {
+                        invalidate();
+                        viewUpdated = true;
+                    }
+                    break;
+                }
             }
         }
     }
@@ -168,6 +203,16 @@ public class ParticleTextView extends View {
                 }
             }
         }
+    }
+
+    public void setAnimationFrozen() {
+        isAnimationFrozen = true;
+    }
+
+    public void setAnimationResume() {
+        isAnimationFrozen = false;
+        viewUpdated = false;
+        invalidate();
     }
 
     private void pauseAnimation() {

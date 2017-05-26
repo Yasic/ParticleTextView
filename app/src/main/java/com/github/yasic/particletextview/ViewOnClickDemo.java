@@ -1,9 +1,7 @@
 package com.github.yasic.particletextview;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -42,6 +40,24 @@ public class ViewOnClickDemo extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 particleTextView.stopAnimation();
+            }
+        });
+
+        Button btnPauseAnimation = (Button)findViewById(R.id.btn_pause_animation);
+        assert btnPauseAnimation != null;
+        btnPauseAnimation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                particleTextView.setAnimationFrozen();
+            }
+        });
+
+        Button btnResumeAnimation = (Button)findViewById(R.id.btn_resume_animation);
+        assert btnResumeAnimation != null;
+        btnResumeAnimation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                particleTextView.setAnimationResume();
             }
         });
     }
