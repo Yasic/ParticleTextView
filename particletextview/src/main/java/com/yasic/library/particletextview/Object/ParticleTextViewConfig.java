@@ -11,6 +11,7 @@ public class ParticleTextViewConfig {
     private double releasing = 0.1;
     private double miniJudgeDistance = 0.05;
     private String targetText = "Default";
+    private String[] targetTextArray;
     private int textSize = 120;
     private float particleRadius = 1;
     private String[] particleColorArray = null;
@@ -59,6 +60,11 @@ public class ParticleTextViewConfig {
 
         public Builder setTargetText(String targetText) {
             particleTextViewConfig.targetText = targetText;
+            return this;
+        }
+
+        public Builder setTargetText(String[] targetTextArray) {
+            particleTextViewConfig.targetTextArray = targetTextArray;
             return this;
         }
 
@@ -124,6 +130,10 @@ public class ParticleTextViewConfig {
 
     public String getTargetText() {
         return targetText;
+    }
+
+    public String[] getTargetTextArray() {
+        return targetTextArray;
     }
 
     public int getTextSize() {

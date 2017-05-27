@@ -15,13 +15,13 @@ public class ViewOnClickDemo extends AppCompatActivity {
         setContentView(R.layout.activity_view_on_click_demo);
         final ParticleTextView particleTextView = (ParticleTextView) findViewById(R.id.particleTextView);
         ParticleTextViewConfig config1 = new ParticleTextViewConfig.Builder()
-                .setTargetText("Loading")
-                .setReleasing(0.4)
-                .setParticleRadius(4)
-                .setMiniDistance(1)
+                .setTargetText(new String[]{"Loading", "Sample", "Message"})
+                .setReleasing(0.05)
+                .setParticleRadius(5)
+                .setMiniDistance(0.5)
                 .setTextSize(150)
-                .setRowStep(9)
-                .setColumnStep(9)
+                .setRowStep(8)
+                .setColumnStep(8)
                 .instance();
         particleTextView.setConfig(config1);
 

@@ -28,18 +28,21 @@ public class ParticleTextView extends View {
     private boolean isAnimationFrozen = false;
     private boolean isAnimationStop = false;
     private boolean viewUpdated = false;
-    private boolean setParticles = false;
+    private boolean setParticles = true;
 
     private int columnStep;
     private int rowStep;
     private double releasing;
     private double miniJudgeDistance;
     private String targetText = null;
+    private String[] targetTextArray = null;
     private int textSize;
     private float particleRadius;
     private String[] particleColorArray = null;
     private MovingStrategy movingStrategy = null;
     private long delay = 1000;
+    private long delayHolder = 1000;
+    private int textIterator = 0;
 
     public ParticleTextView(Context context) {
         super(context);
@@ -70,11 +73,13 @@ public class ParticleTextView extends View {
             this.releasing = config.getReleasing();
             this.miniJudgeDistance = config.getMiniJudgeDistance();
             this.targetText = config.getTargetText();
+            this.targetTextArray = config.getTargetTextArray();
             this.textSize = config.getTextSize();
             this.particleRadius = config.getParticleRadius();
             this.particleColorArray = config.getParticleColorArray();
             this.movingStrategy = config.getMovingStrategy();
             this.delay = config.getDelay();
+            this.delayHolder = config.getDelay();
         } else {
             Log.e("CONFIGERROR", "ParticleTextView Config is Null");
         }
@@ -89,6 +94,7 @@ public class ParticleTextView extends View {
 
     public void stopAnimation() {
         this.isAnimationOn = false;
+        this.textIterator = 0;
     }
 
     public boolean isAnimationPause() {
@@ -97,12 +103,6 @@ public class ParticleTextView extends View {
 
     public boolean isAnimationStop(){
         return this.isAnimationStop;
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        setParticles();
     }
 
     private int[][] bitmapTransition(int centerX, int centerY) {
@@ -127,7 +127,22 @@ public class ParticleTextView extends View {
 
         if (!setParticles)
         {
+            if (targetTextArray != null)
+            {
+                //Iterate through text array loop to show all text values.
+                if (textIterator == targetTextArray.length)
+                {
+                    textIterator = 0;
+                    targetText = targetTextArray[textIterator];
+                }
+                else
+                {
+                    targetText = targetTextArray[textIterator];
+                    textIterator += 1;
+                }
+            }
             setParticles();
+            Log.d("TargetText", targetText);
             setParticles = true;
         }
 
@@ -136,6 +151,7 @@ public class ParticleTextView extends View {
         }
 
         if (!checkJudgeDistance()) {
+            Log.d("Particles", "Paused");
             pauseAnimation();
         }
 
@@ -169,6 +185,7 @@ public class ParticleTextView extends View {
                     particles[i].setVx((particles[i].getTargetX() - particles[i].getSourceX()) * releasing);
                     particles[i].setVy((particles[i].getTargetY() - particles[i].getSourceY()) * releasing);
                 } else {
+                    //Restore saved particles layout. Do not continue to update when paused.
                     canvas.restore();
                     if (!viewUpdated)
                     {
@@ -182,6 +199,7 @@ public class ParticleTextView extends View {
     }
 
     private void setParticles(){
+        Log.d("Particles", "Set Particles");
         int centerX = getWidth() / 2;
         int centerY = getHeight() / 2;
         int[][] colorArray = bitmapTransition(centerX, centerY);
@@ -231,12 +249,30 @@ public class ParticleTextView extends View {
             }
         }
         if (delay >= 0) {
+            if (!isAnimationStop)
+            {
+                //Setting Particles is a CPU and time consuming process. Do not delay this operation!
+                delay = 0;
+            }
+            else
+            {
+                //This delay displays the text. Reset delay to value set by user in configs.
+                delay = delayHolder;
+            }
             rx.Observable.timer(delay, TimeUnit.MILLISECONDS)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Action1<Long>() {
                         @Override
                         public void call(Long aLong) {
                             isAnimationPause = false;
+                            if (!isAnimationStop)
+                            {
+                                //Call a refresh to display next particle text
+                                if (targetTextArray != null)
+                                {
+                                    setParticles = false;
+                                }
+                            }
                         }
                     });
         }
