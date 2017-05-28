@@ -10,6 +10,7 @@ ParticleTextView 是一个 Android 平台的自定义 view 组件，可以用彩
 
 ## 1. 引入依赖
 
+
 ```
 compile 'yasic.library.ParticleTextView:particletextview:0.0.6'
 ```
