@@ -22,4 +22,18 @@
         android:layout_height="48dp"
         android:text="Stop Animation"
         android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_pause_animation"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Pause Animation"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/btn_resume_animation"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Resume Animation"
+        android:textAllCaps="false"/>
 </LinearLayout>
