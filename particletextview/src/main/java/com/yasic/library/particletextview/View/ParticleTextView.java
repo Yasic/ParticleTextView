@@ -43,6 +43,8 @@ public class ParticleTextView extends View {
     private long delay = 1000;
     private long delayHolder = 1000;
     private int textIterator = 0;
+    private int xPosition;
+    private int yPosition;
 
     public ParticleTextView(Context context) {
         super(context);
@@ -80,6 +82,8 @@ public class ParticleTextView extends View {
             this.movingStrategy = config.getMovingStrategy();
             this.delay = config.getDelay();
             this.delayHolder = config.getDelay();
+            this.xPosition = config.getXPosition();
+            this.yPosition = config.getYPosition();
         } else {
             Log.e("CONFIGERROR", "ParticleTextView Config is Null");
         }
@@ -105,10 +109,12 @@ public class ParticleTextView extends View {
         return this.isAnimationStop;
     }
 
-    private int[][] bitmapTransition(int centerX, int centerY) {
+    private int[][] bitmapTransition() {
+        int centerX = (int) (((float) getWidth() / 100) * xPosition);
+        int centerY = (int) (((float) getHeight() / 100) * yPosition);
         int[][] colorArray;
         textPaint = initTextPaint();
-        bitmap = Bitmap.createBitmap(centerX * 2, centerY * 2, Bitmap.Config.ARGB_8888);
+        bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
         Canvas textCanvas = new Canvas(bitmap);
         textCanvas.drawText(targetText, centerX, centerY, textPaint);
         colorArray = new int[bitmap.getHeight()][bitmap.getWidth()];
@@ -117,7 +123,6 @@ public class ParticleTextView extends View {
                 colorArray[row][column] = bitmap.getPixel(column, row);
             }
         }
-        Log.d("Bitmap Transition", "Run");
         return colorArray;
     }
 
@@ -142,7 +147,6 @@ public class ParticleTextView extends View {
                 }
             }
             setParticles();
-            Log.d("TargetText", targetText);
             setParticles = true;
         }
 
@@ -151,7 +155,6 @@ public class ParticleTextView extends View {
         }
 
         if (!checkJudgeDistance()) {
-            Log.d("Particles", "Paused");
             pauseAnimation();
         }
 
@@ -199,10 +202,7 @@ public class ParticleTextView extends View {
     }
 
     private void setParticles(){
-        Log.d("Particles", "Set Particles");
-        int centerX = getWidth() / 2;
-        int centerY = getHeight() / 2;
-        int[][] colorArray = bitmapTransition(centerX, centerY);
+        int[][] colorArray = bitmapTransition();
         int red, green, blue;
         particles = new Particle[(colorArray.length / rowStep) * colorArray[0].length / columnStep];
         int index = 0;

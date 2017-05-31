@@ -17,6 +17,8 @@ public class ParticleTextViewConfig {
     private String[] particleColorArray = null;
     private MovingStrategy movingStrategy = new RandomMovingStrategy();
     private long delay = 1000;
+    private int xPosition = 50;
+    private int yPosition = 50;
 
     private ParticleTextViewConfig(){}
 
@@ -107,6 +109,22 @@ public class ParticleTextViewConfig {
             return this;
         }
 
+        public Builder setXPosition(int xPosition){
+            if (xPosition <= 0){
+                xPosition = 1;
+            }
+            particleTextViewConfig.xPosition = xPosition;
+            return this;
+        }
+
+        public Builder setYPosition(int yPosition){
+            if (yPosition <= 0){
+                yPosition = 1;
+            }
+            particleTextViewConfig.yPosition = yPosition;
+            return this;
+        }
+
         public ParticleTextViewConfig instance(){
             return particleTextViewConfig;
         }
@@ -154,5 +172,13 @@ public class ParticleTextViewConfig {
 
     public long getDelay() {
         return delay;
+    }
+
+    public int getXPosition() {
+        return xPosition;
+    }
+
+    public int getYPosition() {
+        return yPosition;
     }
 }
