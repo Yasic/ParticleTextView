@@ -110,8 +110,8 @@ public class ParticleTextView extends View {
     }
 
     private int[][] bitmapTransition() {
-        int centerX = (getWidth() / 100) * xPosition;
-        int centerY = (getHeight() / 100) * yPosition;
+        int centerX = (int) (((float) getWidth() / 100) * xPosition);
+        int centerY = (int) (((float) getHeight() / 100) * yPosition);
         int[][] colorArray;
         textPaint = initTextPaint();
         bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
