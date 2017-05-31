@@ -17,8 +17,8 @@ public class ParticleTextViewConfig {
     private String[] particleColorArray = null;
     private MovingStrategy movingStrategy = new RandomMovingStrategy();
     private long delay = 1000;
-    private int xPosition = 50;
-    private int yPosition = 50;
+    private int xPosition = 51;
+    private int yPosition = 51;
 
     private ParticleTextViewConfig(){}
 
